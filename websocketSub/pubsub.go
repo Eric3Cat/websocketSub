@@ -3,27 +3,33 @@ package websocketSub
 import (
 	"context"
 	red "github.com/go-redis/redis/v8"
+	"log"
 	"math"
 	"sync"
 	"sync/atomic"
 )
 
+// Reviver 是一个函数类型，用于将Redis中的key和value转换为接口类型的数据
 type Reviver func(key string, value string) interface{}
 
-type PubSubRedisOptions struct {
-	Publisher   *red.Client
-	Subscriber  *red.Client
-	SolidOption *SolidOption
-}
-
+// OnMessage 是一个函数类型，用于处理接收到的消息
 type OnMessage func(client *Client, data []byte)
 
+// Listener 是一个结构体，用于保存订阅者的信息
 type Listener struct {
 	Client    *Client
 	Channel   string
 	OnMessage OnMessage
 }
 
+// PubSubRedisOptions 是一个结构体，用于保存PubSubClient的Redis连接选项
+type PubSubRedisOptions struct {
+	Publisher   *red.Client
+	Subscriber  *red.Client
+	SolidOption *SolidOption
+}
+
+// PubSubClient 是一个结构体，用于实现基于Redis的PubSub功能的客户端
 type PubSubClient struct {
 	Publisher   *red.Client
 	Subscriber  *red.Client
@@ -36,6 +42,7 @@ type PubSubClient struct {
 	SolidOption *SolidOption
 }
 
+// NewPubSubClient 创建并返回一个新的PubSubClient实例
 func NewPubSubClient(pubSubRedisOptions PubSubRedisOptions) *PubSubClient {
 	pubSubClient := &PubSubClient{
 		Publisher:   pubSubRedisOptions.Publisher,
@@ -54,6 +61,7 @@ func NewPubSubClient(pubSubRedisOptions PubSubRedisOptions) *PubSubClient {
 	return pubSubClient
 }
 
+// Subscribe 订阅指定的频道，并返回订阅的ID
 func (p *PubSubClient) Subscribe(client *Client, channel string, onMessage OnMessage) int64 {
 	if p.subId >= math.MaxInt64 {
 		p.subId = 0
@@ -75,6 +83,7 @@ func (p *PubSubClient) Subscribe(client *Client, channel string, onMessage OnMes
 	return p.subId
 }
 
+// UnSubscribe 取消订阅指定的ID
 func (p *PubSubClient) UnSubscribe(id int64) {
 	p.mu.Lock()
 	defer p.mu.Unlock()
@@ -100,6 +109,7 @@ func (p *PubSubClient) UnSubscribe(id int64) {
 	delete(p.subMap, id)
 }
 
+// Publish 发布消息到指定的频道
 func (p *PubSubClient) Publish(ctx context.Context, channel string, message []byte) {
 	p.Publisher.Publish(ctx, channel, message)
 	offline := &OffLine{
@@ -110,6 +120,7 @@ func (p *PubSubClient) Publish(ctx context.Context, channel string, message []by
 	offline.AddToOffline(ctx, message)
 }
 
+// reSubscribe 重新订阅所有相关频道
 func (p *PubSubClient) reSubscribe() {
 	channels := getKeys(p.subsRefsMap)
 	p.PubSub.Close()
@@ -117,6 +128,7 @@ func (p *PubSubClient) reSubscribe() {
 	p.DropRun <- struct{}{}
 }
 
+// Run 启动一个goroutine来处理接收的PubSub消息
 func (p *PubSubClient) Run() {
 	for {
 		select {
@@ -128,6 +140,7 @@ func (p *PubSubClient) Run() {
 				if ids, ok := p.subsRefsMap[channel]; ok {
 					for _, id := range ids {
 						if listener := p.subMap[id]; ok {
+							log.Printf("[ websocketSub -]Current Push: %v", payLoad) // 输入推入日志
 							listener.Client.Solid.Push(context.Background(), channel, []byte(payLoad))
 							listener.OnMessage(listener.Client, []byte(payLoad))
 						}
@@ -140,6 +153,7 @@ func (p *PubSubClient) Run() {
 	}
 }
 
+// getKeys 获取给定map中所有的key，并返回为一个字符串切片
 func getKeys(m map[string][]int64) []string {
 	var ret = []string{}
 	for k := range m {

@@ -2,6 +2,7 @@ package websocketSub
 
 import (
 	"context"
+	"fmt"
 	"github.com/gorilla/websocket"
 	"log"
 	"net/http"
@@ -49,6 +50,7 @@ func AddWsEvent(eventName string, channelFun ChannelFun, onMessage OnMessage) {
 
 // ServeWs handles websocket requests from the peer.
 func ServeWs(pubSubClient *PubSubClient, w http.ResponseWriter, r *http.Request, genUUIDFun GenUUIDFun) {
+	fmt.Println("----------开始连接ws-----------")
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		log.Println(err)
