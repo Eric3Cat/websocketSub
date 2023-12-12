@@ -2,7 +2,7 @@ module example
 
 go 1.19
 
-replace github.com/Eric3Cat/redissub => ./../
+replace github.com/Eric3Cat/websocketSub => ./../
 
 require (
 	github.com/go-redis/redis/v8 v8.11.5
