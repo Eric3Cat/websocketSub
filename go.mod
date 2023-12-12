@@ -1,4 +1,4 @@
-module github.com/Eric3Cat/redissub
+module github.com/Eric3Cat/websocketSub
 
 go 1.19
 
