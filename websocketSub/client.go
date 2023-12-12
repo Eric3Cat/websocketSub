@@ -163,7 +163,7 @@ func (c *Client) ReadPump(pubSubClient *PubSubClient) {
 				channelKeyFun := onMessageWrapper.ChannelFun // 获取频道函数
 				var channel = event.EventName                // 频道名称
 				if channelKeyFun != nil {
-					channel = channelKeyFun(c.Ctx, []byte(event.Data)) // 根据频道函数获取具体频道
+					channel = channelKeyFun(context.Background(), []byte(event.Data)) // 根据频道函数获取具体频道
 				}
 
 				GoSafe(func() { // 协程安全执行

@@ -140,7 +140,7 @@ func (p *PubSubClient) Run() {
 				if ids, ok := p.subsRefsMap[channel]; ok {
 					for _, id := range ids {
 						if listener := p.subMap[id]; ok {
-							log.Printf("[ websocketSub -]Current Push: %v", payLoad) // 输入推入日志
+							log.Printf("[ websocketSub - ] Current Push: [channel %v] [Event %v]", channel, payLoad) // 输入推入日志
 							listener.Client.Solid.Push(context.Background(), channel, []byte(payLoad))
 							listener.OnMessage(listener.Client, []byte(payLoad))
 						}

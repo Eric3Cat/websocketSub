@@ -48,9 +48,10 @@ type (
 
 // 确认消息，更新偏移量、删除等待者和接收者中的消息
 func (r *Online) Ack(ctx context.Context, data *Event) {
-	r.Waiter.Del(ctx, data)
-	r.Receiver.Received(ctx, data)
-	r.Offset.UpdateOffset(ctx, data)
+	r.Waiter.Del(ctx, data)          // 从Waiter中删除数据
+	r.Receiver.Received(ctx, data)   // 将数据接收
+	r.Offset.UpdateOffset(ctx, data) // 更新偏移量
+
 }
 
 // 推送消息到等待者列表中的Redis
@@ -64,7 +65,7 @@ func (w *Waiter) Push(ctx context.Context, data []byte) {
 	field := event.Id
 	value := string(data)
 	w.Rdb.HSet(ctx, key, field, value).Err()
-	log.Printf("[ websocketSub -]Current Push- key：%v value：%v", key, value) // 输入推入日志
+	log.Printf("[ websocketSub - ] Current pull: [channel %v] [Event %v]", key, value) // 输入推出日志
 	w.Rdb.Expire(ctx, w.Key, w.ExpireTime)
 }
 

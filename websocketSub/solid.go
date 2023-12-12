@@ -104,27 +104,28 @@ func (s *Solid) Push(ctx context.Context, channel string, event []byte) {
 // Ack 标记指定消息为已读
 func (s *Solid) Ack(ctx context.Context, event *Event) {
 	for _, channel := range s.Client.Channels {
-		rdb := s.Rdb
-		expireTime := s.ExpireTime
-		id := s.Client.Id
+		rdb := s.Rdb               // s.Rdb 表示 s 中的 Rdb 字段
+		expireTime := s.ExpireTime // s.ExpireTime 表示 s 中的 ExpireTime 字段
+		id := s.Client.Id          // s.Client.Id 表示 s 中的 Client 结构体的 Id 字段
 
 		online := &Online{
 			Waiter: &Waiter{
-				Key:        GenWaiterKey(channel, id),
-				Rdb:        rdb,
-				ExpireTime: expireTime,
+				Key:        GenWaiterKey(channel, id), // GenWaiterKey(channel, id) 函数表示生成 Waiter 结构体的 Key 字段的值
+				Rdb:        rdb,                       // rdb 表示上述的 rdb 变量
+				ExpireTime: expireTime,                // expireTime 表示上述的 expireTime 变量
 			},
 			Receiver: &Receiver{
-				Key:        GenReceiverKey(channel, id),
-				Rdb:        rdb,
-				ExpireTime: expireTime,
+				Key:        GenReceiverKey(channel, id), // GenReceiverKey(channel, id) 函数表示生成 Receiver 结构体的 Key 字段的值
+				Rdb:        rdb,                         // rdb 表示上述的 rdb 变量
+				ExpireTime: expireTime,                  // expireTime 表示上述的 expireTime 变量
 			},
 			Offset: &Offset{
-				Key:        GenOffsetKey(channel, id),
-				Rdb:        rdb,
-				ExpireTime: expireTime,
+				Key:        GenOffsetKey(channel, id), // GenOffsetKey(channel, id) 函数表示生成 Offset 结构体的 Key 字段的值
+				Rdb:        rdb,                       // rdb 表示上述的 rdb 变量
+				ExpireTime: expireTime,                // expireTime 表示上述的 expireTime 变量
 			},
 		}
+
 		online.Ack(ctx, event)
 	}
 }
