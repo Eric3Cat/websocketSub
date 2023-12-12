@@ -1,15 +1,13 @@
 package main
 
-
 import (
 	"context"
 	"flag"
 	"fmt"
 	"github.com/Eric3Cat/websocketSub/redissub"
-
 	"github.com/go-redis/redis/v8"
 	jsoniter "github.com/json-iterator/go"
- 	"github.com/zeromicro/go-zero/core/logx"
+	"github.com/zeromicro/go-zero/core/logx"
 	"github.com/zeromicro/go-zero/core/service"
 	"github.com/zeromicro/go-zero/rest"
 	"net/http"
@@ -17,8 +15,7 @@ import (
 	"sync/atomic"
 	"time"
 )
-go: github.com/Eric3Cat/redissub: module github.com/Eric3Cat: reading https://goproxy.cn/github.com/%21eric3%21cat/@v/list: 404 Not Found
-server response: not found: invalid github.com import path "github.com/Eric3Cat"
+
 var (
 	port    = flag.Int("port", 3333, "the port to listen")
 	timeout = flag.Int64("timeout", 0, "timeout of milliseconds")

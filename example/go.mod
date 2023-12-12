@@ -5,6 +5,7 @@ go 1.19
 replace github.com/Eric3Cat/websocketSub => ./../
 
 require (
+	github.com/Eric3Cat/websocketSub v0.0.0-00010101000000-000000000000
 	github.com/go-redis/redis/v8 v8.11.5
 	github.com/json-iterator/go v1.1.12
 	github.com/zeromicro/go-zero v1.4.3
@@ -23,6 +24,7 @@ require (
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/pprof v0.0.0-20211214055906-6f57359322fd // indirect
 	github.com/google/uuid v1.3.0 // indirect
+	github.com/gorilla/websocket v1.5.0 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.7.0 // indirect
 	github.com/mattn/go-colorable v0.1.9 // indirect
 	github.com/mattn/go-isatty v0.0.14 // indirect
