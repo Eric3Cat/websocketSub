@@ -1,4 +1,4 @@
-package redissub
+package websocketSub
 
 import (
 	"bytes"

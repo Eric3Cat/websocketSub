@@ -1,4 +1,4 @@
-package redissub
+package websocketSub
 
 import (
 	"context"
@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	offlinePrefix = "redissub:offline:zset:%v"
+	offlinePrefix = "websocketSub:offline:zset:%v"
 )
 
 type (

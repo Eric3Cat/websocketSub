@@ -1,4 +1,4 @@
-package redissub
+package websocketSub
 
 import (
 	"context"
@@ -10,9 +10,9 @@ import (
 )
 
 const (
-	waiterPrefix   = "redissub:online:waiter:hash:%v:%v"
-	receiverPrefix = "redissub:online:receiver:hash:%v:%v"
-	offsetPrefix   = "redissub:online:offset:%v:%v"
+	waiterPrefix   = "websocketSub:online:waiter:hash:%v:%v"
+	receiverPrefix = "websocketSub:online:receiver:hash:%v:%v"
+	offsetPrefix   = "websocketSub:online:offset:%v:%v"
 )
 
 type (

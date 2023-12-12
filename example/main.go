@@ -4,7 +4,7 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"github.com/Eric3Cat/websocketSub/redissub"
+	"github.com/Eric3Cat/websocketSub/websocketSub"
 	"github.com/go-redis/redis/v8"
 	jsoniter "github.com/json-iterator/go"
 	"github.com/zeromicro/go-zero/core/logx"
@@ -56,18 +56,18 @@ func main() {
 		Password: "", // no password set
 		DB:       0,  // use default DB
 	})
-	solidOption := &redissub.SolidOption{
+	solidOption := &websocketSub.SolidOption{
 		ExpireTime: 3600 * time.Second,
 		Duration:   3 * time.Second,
 		Rdb:        pub,
 	}
 
-	PubSubClient := redissub.NewPubSubClient(redissub.PubSubRedisOptions{Publisher: pub, Subscriber: sub, SolidOption: solidOption})
+	PubSubClient := websocketSub.NewPubSubClient(websocketSub.PubSubRedisOptions{Publisher: pub, Subscriber: sub, SolidOption: solidOption})
 
 	channel := "joinRoom"
-	redissub.AddWsEvent("joinRoom", func(ctx context.Context, data []byte) string {
+	websocketSub.AddWsEvent("joinRoom", func(ctx context.Context, data []byte) string {
 		return channel
-	}, func(client *redissub.Client, data []byte) {
+	}, func(client *websocketSub.Client, data []byte) {
 		client.Send <- data
 	})
 
@@ -92,7 +92,7 @@ func main() {
 		Method: http.MethodGet,
 		Path:   "/push",
 		Handler: func(w http.ResponseWriter, r *http.Request) {
-			event2 := &redissub.Event{
+			event2 := &websocketSub.Event{
 				Id:        GenUuid(time.Now()),
 				EventName: "you event",
 				Data:      "1",
@@ -107,7 +107,7 @@ func main() {
 		Method: http.MethodGet,
 		Path:   "/ws",
 		Handler: func(w http.ResponseWriter, r *http.Request) {
-			redissub.ServeWs(PubSubClient, w, r, func(r *http.Request) string {
+			websocketSub.ServeWs(PubSubClient, w, r, func(r *http.Request) string {
 				return GenUuid(time.Now())
 			})
 		},
