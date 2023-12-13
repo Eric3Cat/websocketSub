@@ -5,7 +5,6 @@ import (
 	"fmt"
 	red "github.com/go-redis/redis/v8"
 	jsoniter "github.com/json-iterator/go"
-	"log"
 	"strconv"
 	"time"
 )
@@ -65,7 +64,6 @@ func (w *Waiter) Push(ctx context.Context, data []byte) {
 	field := event.Id
 	value := string(data)
 	w.Rdb.HSet(ctx, key, field, value).Err()
-	log.Printf("[ websocketSub - ] Current pull: [channel %v] [Event %v]", key, value) // 输入推出日志
 	w.Rdb.Expire(ctx, w.Key, w.ExpireTime)
 }
 
