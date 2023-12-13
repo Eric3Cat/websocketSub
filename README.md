@@ -3,7 +3,7 @@ A redis subscription libaray for go
 
 
 ### Installation
-```go get github.com/kenisad5566/redissub```
+```go get github.com/Eric3Cat/websocketSub```
 
 
 ### Feature
