@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"context"
 	"errors"
-	"fmt"
 	"github.com/gorilla/websocket"
 	jsoniter "github.com/json-iterator/go"
 	"io"
@@ -118,13 +117,23 @@ func (c *Client) UnSubscribe(channel string) int64 {
 }
 
 // close关闭Client的连接和资源。
+func (c *Client) defaultClose(pubSubClient *PubSubClient) {
+	log.Printf("[ 开始执行关闭ws ]   [by- %v]", "client.go-close(pubSubClient *PubSubClient)")
+	for _, subId := range c.SubIds {
+		pubSubClient.UnSubscribe(subId)
+	}
+	c.conn.Close()
+	log.Printf("[ 成功关闭ws ]   [by- %v]", "client.go-close(pubSubClient *PubSubClient)")
+}
+
+// close关闭Client的连接和资源。
 func (c *Client) close(pubSubClient *PubSubClient) {
 	for _, subId := range c.SubIds {
 		pubSubClient.UnSubscribe(subId)
 	}
 	defer func() {
 		c.conn.Close()
-		fmt.Println("----------关闭ws-----------") // 输出连接信息
+		log.Printf("[ 关闭ws ]   [by- %v]", "client.go-close(pubSubClient *PubSubClient)")
 		c = nil
 	}()
 }
