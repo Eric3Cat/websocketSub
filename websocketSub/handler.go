@@ -79,6 +79,4 @@ func ServeWs(pubSubClient *PubSubClient, w http.ResponseWriter, r *http.Request,
 		client.Solid.MonitorReSend() // 监听并重新发送消息
 	})
 
-	//关闭事件
-	defer client.defaultClose(pubSubClient)
 }
