@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"errors"
+	"fmt"
 	"github.com/gorilla/websocket"
 	jsoniter "github.com/json-iterator/go"
 	"io"
@@ -121,8 +122,11 @@ func (c *Client) close(pubSubClient *PubSubClient) {
 	for _, subId := range c.SubIds {
 		pubSubClient.UnSubscribe(subId)
 	}
-	c.conn.Close()
-	c = nil
+	defer func() {
+		c.conn.Close()
+		fmt.Println("----------关闭ws-----------") // 输出连接信息
+		c = nil
+	}()
 }
 
 // ReadPump在pubSubClient上读取消息并处理。
