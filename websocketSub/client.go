@@ -233,7 +233,7 @@ func (c *Client) writePump(pubSubClient *PubSubClient) {
 			}
 
 			w.Write(message)
-			log.Printf("[ ws writePump Write message Success %v]", message)
+			log.Printf("[ ws writePump Write message Success %v]", string(message))
 			// 将队列中的聊天消息添加到当前websocket消息中。
 			c.WriteData(w)
 
