@@ -28,7 +28,8 @@ const (
 	maxMessageSize = 2048
 
 	// bufSize 是发送缓冲区大小
-	bufSize = 256
+	//bufSize = 256
+	bufSize = 2048
 
 	// ackEvent 是用于确认消息的事件名称。
 	ackEvent = "ack"
