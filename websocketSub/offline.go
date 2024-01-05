@@ -5,6 +5,7 @@ import (
 	"fmt"
 	red "github.com/go-redis/redis/v8"
 	jsoniter "github.com/json-iterator/go"
+	"log"
 	"strconv"
 	"time"
 )
@@ -31,8 +32,10 @@ func (o *OffLine) AddToOffline(ctx context.Context, data []byte) {
 			Member: string(data),        // 将离线事件的数据作为成员添加到离线用户集合中
 		})
 		o.Rdb.Expire(ctx, o.Key, o.ExpireTime) // 设置离线用户集合的过期时间
+		log.Printf("[ ws AddToOffline key:%v,value:%v ]", o.Key, string(data))
+	} else {
+		log.Printf("[ ws AddToOffline 无法成功添加 出现错误 error: %v ]", err)
 	}
-
 }
 
 func (o *OffLine) MessageByOffset(ctx context.Context, offset int64) ([]string, error) {

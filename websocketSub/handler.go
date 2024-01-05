@@ -62,7 +62,7 @@ func ServeWs(pubSubClient *PubSubClient, w http.ResponseWriter, r *http.Request,
 	fmt.Println("----------开始连接ws-----------") // 输出连接信息
 	conn, err := upgrader.Upgrade(w, r, nil)   // 升级HTTP连接为WebSocket连接
 	if err != nil {
-		log.Println(err)
+		log.Printf("[ ws ServeWs upgrader.Upgrade 出现错误 error: %v ]", err)
 		return
 	}
 	id := genUUIDFun(r)                                              // 生成UUID

@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"errors"
+	"fmt"
 	"github.com/gorilla/websocket"
 	jsoniter "github.com/json-iterator/go"
 	"io"
@@ -98,23 +99,23 @@ func (c *Client) BindChannelWithSubId(channel string, subId int64) {
 }
 
 // UnSubscribe从Client的订阅列表中解除频道的订阅。
-func (c *Client) UnSubscribe(channel string) int64 {
-	c.mu.Lock()
-	for idx, v := range c.Channels {
-		// 从channel subId切片中删除channel
-		if v == channel {
-			c.Channels = append(c.Channels[:idx], c.Channels[idx+1:]...)
-		}
-	}
-	c.mu.Unlock()
-
-	// 从channel subId中删除channel
-	subId := c.SubIds[channel]
-	c.mu.Lock()
-	delete(c.SubIds, channel)
-	c.mu.Unlock()
-	return subId
-}
+//func (c *Client) UnSubscribe(channel string) int64 {
+//	c.mu.Lock()
+//	for idx, v := range c.Channels {
+//		// 从channel subId切片中删除channel
+//		if v == channel {
+//			c.Channels = append(c.Channels[:idx], c.Channels[idx+1:]...)
+//		}
+//	}
+//	c.mu.Unlock()
+//
+//	// 从channel subId中删除channel
+//	subId := c.SubIds[channel]
+//	c.mu.Lock()
+//	delete(c.SubIds, channel)
+//	c.mu.Unlock()
+//	return subId
+//}
 
 // close关闭Client的连接和资源。
 func (c *Client) defaultClose(pubSubClient *PubSubClient) {
@@ -213,25 +214,30 @@ func (c *Client) writePump(pubSubClient *PubSubClient) {
 	}()
 
 	for {
+		fmt.Println("go chan len：", len(c.Send))
 		select {
 		case message, ok := <-c.Send:
 			c.conn.SetWriteDeadline(time.Now().Add(writeWait))
 			if !ok {
 				// hub关闭了该通道。
 				c.conn.WriteMessage(websocket.CloseMessage, []byte{})
+				log.Printf("[ ws writePump SetWriteDeadline !ok]")
 				return
 			}
 
 			w, err := c.conn.NextWriter(websocket.TextMessage)
 			if err != nil {
+				log.Printf("[ ws writePump c.conn.NextWriter 出现错误 error: %v ]", err)
 				return
 			}
-			w.Write(message)
 
+			w.Write(message)
+			log.Printf("[ ws writePump Write message Success %v]", message)
 			// 将队列中的聊天消息添加到当前websocket消息中。
 			c.WriteData(w)
 
 			if err := w.Close(); err != nil {
+				log.Printf("[ ws writePump w.Close() err %v]", err)
 				return
 			}
 		case <-ticker.C:
