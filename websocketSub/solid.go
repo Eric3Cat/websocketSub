@@ -169,12 +169,15 @@ func (s *Solid) MonitorReSend() {
 						},
 					}
 					ctx := context.Background()
+					//增加goroutine超时时间
+					context.WithTimeout(ctx, 30*time.Minute)
 					strings := online.Waiter.All(ctx)
 					for _, item := range strings {
 						str := item.(string)
 						if s.IsFresh(str) {
 							continue
 						}
+						//写入事件channel管道
 						s.Client.Send <- []byte(str)
 					}
 				})

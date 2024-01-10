@@ -55,6 +55,7 @@ func main() {
 		Addr:     "localhost:6379",
 		Password: "", // no password set
 		DB:       0,  // use default DB
+
 	})
 	solidOption := &websocketSub.SolidOption{
 		ExpireTime: 3600 * time.Second,
@@ -115,6 +116,7 @@ func main() {
 
 	fmt.Println("listen")
 	engine.Start()
+
 }
 
 var num int64

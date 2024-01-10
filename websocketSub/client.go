@@ -241,6 +241,7 @@ func (c *Client) writePump(pubSubClient *PubSubClient) {
 				log.Printf("[ ws writePump w.Close() err %v]", err)
 				return
 			}
+			log.Printf("[ ws writePump 响应成功 ")
 		case <-ticker.C:
 			c.conn.SetWriteDeadline(time.Now().Add(writeWait))
 			if err := c.conn.WriteMessage(websocket.PingMessage, nil); err != nil {
