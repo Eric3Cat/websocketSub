@@ -170,7 +170,9 @@ func (s *Solid) MonitorReSend() {
 					}
 					ctx := context.Background()
 					//增加goroutine超时时间
-					context.WithTimeout(ctx, 30*time.Minute)
+					ctx, cancelFunc := context.WithTimeout(ctx, 30*time.Minute)
+					//释放
+					defer cancelFunc()
 					strings := online.Waiter.All(ctx)
 					for _, item := range strings {
 						str := item.(string)
