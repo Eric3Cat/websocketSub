@@ -25,11 +25,11 @@ const (
 	pingPeriod = (pongWait * 9) / 10
 
 	// maxMessageSize 是对等方允许的最大消息大小。
-	maxMessageSize = 2048
+	maxMessageSize = 204800
 
 	// bufSize 是发送缓冲区大小
 	//bufSize = 256
-	bufSize = 2048
+	bufSize = 204800
 
 	// ackEvent 是用于确认消息的事件名称。
 	ackEvent = "ack"
