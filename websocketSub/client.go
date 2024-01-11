@@ -28,7 +28,7 @@ const (
 
 	// bufSize 是发送缓冲区大小
 	//bufSize = 256
-	bufSize = 20480000000000
+	bufSize = 2048000
 
 	// ackEvent 是用于确认消息的事件名称。
 	ackEvent = "ack"
