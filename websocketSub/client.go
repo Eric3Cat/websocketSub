@@ -24,7 +24,7 @@ const (
 	pingPeriod = (pongWait * 9) / 10
 
 	// maxMessageSize 是对等方允许的最大消息大小。
-	maxMessageSize = 2048000000
+	maxMessageSize = 204800000
 
 	// bufSize 是发送缓冲区大小
 	//bufSize = 256
