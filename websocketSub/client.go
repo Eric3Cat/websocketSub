@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"context"
 	"errors"
-	"fmt"
 	"github.com/gorilla/websocket"
 	jsoniter "github.com/json-iterator/go"
 	"io"
@@ -215,7 +214,7 @@ func (c *Client) writePump(pubSubClient *PubSubClient) {
 	}()
 
 	for {
-		fmt.Println("go chan len：", len(c.Send))
+		log.Printf("[ ws writePump  Current user %v, Go Channel length is %v]", c.Id, len(c.Send))
 		select {
 		case message, ok := <-c.Send:
 			c.conn.SetWriteDeadline(time.Now().Add(writeWait))
