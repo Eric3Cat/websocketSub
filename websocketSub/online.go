@@ -72,6 +72,7 @@ func (w *Waiter) All(ctx context.Context) []interface{} {
 	strings := []interface{}{}
 	result, err := w.Rdb.HGetAll(ctx, w.Key).Result()
 	if err != nil {
+		fmt.Println("redis.HGetAll error: %v", err)
 		return strings
 	}
 	for _, item := range result {

@@ -75,8 +75,8 @@ func ServeWs(pubSubClient *PubSubClient, w http.ResponseWriter, r *http.Request,
 	GoSafe(func() {
 		client.writePump(pubSubClient) // 启动写入Pump
 	})
-	GoSafe(func() {
-		client.Solid.MonitorReSend() // 监听并重新发送消息
-	})
+	//GoSafe(func() {
+	//	client.Solid.MonitorReSend() // 监听并重新发送消息
+	//})
 
 }
