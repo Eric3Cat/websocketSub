@@ -193,11 +193,11 @@ func (c *Client) ReadPump(pubSubClient *PubSubClient) {
 				})
 			}
 
-			if event.EventName == ackEvent { // 如果消息类型为ack
-				var ackEvent Event
-				_ = jsoniter.Unmarshal([]byte(event.Data), &ackEvent) // 解析ack消息数据为event结构体
-				c.Solid.Ack(context.Background(), &ackEvent)          // 执行ack操作
-			}
+			//if event.EventName == ackEvent { // 如果消息类型为ack
+			//	var ackEvent Event
+			//	_ = jsoniter.Unmarshal([]byte(event.Data), &ackEvent) // 解析ack消息数据为event结构体
+			//	c.Solid.Ack(context.Background(), &ackEvent)          // 执行ack操作
+			//}
 		}
 	}
 }
