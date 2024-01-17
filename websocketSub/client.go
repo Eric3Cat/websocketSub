@@ -187,9 +187,9 @@ func (c *Client) ReadPump(pubSubClient *PubSubClient) {
 					}
 					subId := pubSubClient.Subscribe(c, channel, onMessage) // 在pubsubclient中订阅频道
 					c.BindChannelWithSubId(channel, subId)                 // 将频道与订阅id关联
-					GoSafe(func() {                                        // 协程安全执行
-						c.Solid.PullOfflineMessage() // 拉取离线消息以等待重新发送
-					})
+					//GoSafe(func() {                                        // 协程安全执行
+					//	c.Solid.PullOfflineMessage() // 拉取离线消息以等待重新发送
+					//})
 				})
 			}
 
