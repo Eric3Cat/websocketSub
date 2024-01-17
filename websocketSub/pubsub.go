@@ -112,12 +112,12 @@ func (p *PubSubClient) UnSubscribe(id int64) {
 // Publish 发布消息到指定的频道
 func (p *PubSubClient) Publish(ctx context.Context, channel string, message []byte) {
 	p.Publisher.Publish(ctx, channel, message)
-	offline := &OffLine{
-		ExpireTime: p.SolidOption.ExpireTime,
-		Rdb:        p.Publisher,
-		Key:        GenOfflineKey(channel),
-	}
-	offline.AddToOffline(ctx, message)
+	//offline := &OffLine{
+	//	ExpireTime: p.SolidOption.ExpireTime,
+	//	Rdb:        p.Publisher,
+	//	Key:        GenOfflineKey(channel),
+	//}
+	//offline.AddToOffline(ctx, message)
 }
 
 // reSubscribe 重新订阅所有相关频道
